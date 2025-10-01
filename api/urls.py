@@ -8,7 +8,7 @@ router.register('livres', views.BookView, basename='livres')
 router.register('listings', views.ListingView, basename='listing')
 router.register('categories', views.CategoryView, basename='category')
 urlpatterns = [
-    path('book/', views.Apis.as_view()),
+    path('book/', views.Listings.as_view()),
 ]
 
 urlpatterns += router.urls

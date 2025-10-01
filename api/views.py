@@ -43,3 +43,22 @@ class CategoryView(viewsets.ModelViewSet):
 
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+class Listings(APIView):
+	def get(self, request):
+		listings = Listing.objects.select_related().all()
+		name = request.query_params.get('name', None)
+		price = request.query_params.get('price', None)
+		ordering = request.query_params.get('ordering', None)
+		if name is not None:
+			listings = listings.filter(title__icontains=name)
+		if price is not None:
+			listings = listings.filter(price__lte=price)
+			# listings = listings.filter(price__gte=price) # greater than equal to
+		if ordering is not None:
+			# ordering_fields = ordering.split(',')
+			listings = listings.order_by(ordering)
+		serializer = ListingSerializer(listings, many=True)
+		return Response(serializer.data)
+		return Response({"message": "Hello, World!"})
+
